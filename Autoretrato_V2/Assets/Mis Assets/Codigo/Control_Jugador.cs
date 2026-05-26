@@ -5,7 +5,7 @@ public class Control_Jugador : MonoBehaviour
 {
     public ParticleSystem sangre;
     public Image bolsaDeSangre;
-    public float sangrado, vida;
+    public float sangrado, recuperacion, vida;
 
     void Start()
     {
@@ -42,6 +42,7 @@ public class Control_Jugador : MonoBehaviour
 
     void ManejarParticulasYVida()
     {
+        vida += Time.deltaTime * recuperacion;
         vida -= Time.deltaTime * sangrado;
 
         bolsaDeSangre.fillAmount = vida / 100;
