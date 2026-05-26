@@ -7,6 +7,9 @@ public class Control_Jugador : MonoBehaviour
     public Image bolsaDeSangre;
     public float sangrado, recuperacion, vida;
 
+    public delegate void EnviarCondisionPasiente(int valor);
+    static public event EnviarCondisionPasiente Enviar;
+
     void Start()
     {
         Capsulas.Enviar += ModificarSangrado;
@@ -19,8 +22,11 @@ public class Control_Jugador : MonoBehaviour
 
     void Update()
     {
-        DescativarObjetosSeleccionados();
-        ManejarParticulasYVida();
+        if (vida > 0)
+        {
+            DescativarObjetosSeleccionados();
+            ManejarParticulasYVida();
+        }
     }
 
     void DescativarObjetosSeleccionados()
@@ -37,7 +43,10 @@ public class Control_Jugador : MonoBehaviour
 
     void ModificarSangrado(float valor)
     {
-        sangrado -= valor;
+        sangrado += valor;
+
+        if (sangrado <= 0)
+            Enviar.Invoke(0);
     }
 
     void ManejarParticulasYVida()
@@ -50,5 +59,8 @@ public class Control_Jugador : MonoBehaviour
         var emicion = sangre.emission;
 
         emicion.rateOverTime = sangrado;
+
+        if (vida <= 0)
+            Enviar.Invoke(1);
     }
 }

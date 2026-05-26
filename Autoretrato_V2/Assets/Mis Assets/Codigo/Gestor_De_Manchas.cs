@@ -3,9 +3,7 @@ using UnityEngine;
 public class Gestor_De_Manchas : MonoBehaviour
 {
     public float sangrado, tiempo;
-    public float maxActivaciones;
 
-    private int activacionesRealizadas;
     private float temp;
 
     private void Start()
@@ -36,7 +34,6 @@ public class Gestor_De_Manchas : MonoBehaviour
             if (!hijo.gameObject.activeSelf)
             {
                 hijo.gameObject.SetActive(true);
-                activacionesRealizadas++;
                 break;
             }
         }
@@ -45,9 +42,8 @@ public class Gestor_De_Manchas : MonoBehaviour
     void AumentarSangrado(float valor)
     {
         sangrado += valor;
-        maxActivaciones += valor;
 
-        if (maxActivaciones > 10)
-            maxActivaciones = 10;
+        if (sangrado < 0)
+            sangrado = 0;
     }
 }

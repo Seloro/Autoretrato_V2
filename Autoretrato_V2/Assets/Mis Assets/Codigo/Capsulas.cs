@@ -10,6 +10,7 @@ public class Capsulas : MonoBehaviour
 
     Material mat;
     float posicionInicialX, direccion, velocidadReal, frecuenciaReal;
+    bool permitido;
 
     public delegate void EnviarEfecto(float valor);
     static public event EnviarEfecto Enviar;
@@ -24,16 +25,19 @@ public class Capsulas : MonoBehaviour
         nombre.text = formula;
 
         Posicionamiento();
+        permitido = true;
     }
 
     private void OnEnable()
     {
         Posicionamiento();
+        permitido = true;
     }
 
     private void OnDisable()
     {
-        Enviar.Invoke(efecto);
+        if (permitido)
+            Enviar.Invoke(efecto);
     }
 
     void Update()
@@ -41,7 +45,10 @@ public class Capsulas : MonoBehaviour
         Movimiento();
 
         if (transform.position.y < -6)
-            Posicionamiento();
+        {
+            permitido = false;
+            gameObject.SetActive(false);
+        }
     }
 
     void Posicionamiento()
